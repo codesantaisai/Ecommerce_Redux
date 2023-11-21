@@ -27,7 +27,7 @@ const Product = () => {
                 {props.stock > 0 ? 
                 <>
                 <button className='btn btn-success mt-4 me-2'>Buy Now</button> 
-                <button className='btn btn-success mt-4 ms-2 ' onClick={()=>addToCart}> Add to card </button> 
+                <button className='btn btn-success mt-4 ms-2 ' onClick={addToCart}> Add to card </button> 
                 </>
                 : <button className='btn btn-outline-danger'>Out of Stock</button>}
             </div>
