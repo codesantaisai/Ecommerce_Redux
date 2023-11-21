@@ -1,27 +1,46 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductListItem from '../components/ProductListItem'
-import { modifyItem } from '../redux/reducer/cart'
+import { modifyItem,removeItem } from '../redux/reducer/cart'
 
 const Cart = () => {
     const list = useSelector((state)=>state.cart.list)
     const dispatch = useDispatch();
 
     const incrementItem = (item)=>{
+        
         dispatch(modifyItem({...item, count:item.count+1}))
     }
     const decrementItem = (item)=>{
-        dispatch(modifyItem({...item, count:item.count-1}))
+        if(item.count===1){
+            dispatch(removeItem(item))
+        }
+        else{
+            dispatch(modifyItem({...item, count:item.count-1}))
+        }
     }
-    const removeItem = ()=>{
-
+    const removeItemFromCart = (item)=>{
+        dispatch(removeItem(item))
     }
 
   return (
    <>
-    {list.map((item)=> (<ProductListItem {...item} key={item.id} incrementItem={()=>incrementItem(item)} decrementItem={()=>decrementItem(item)} removeItem={item}/>))}
+    {list.length > 0 ? (
+    <>
+    {list.map((item)=> (<ProductListItem 
+    {...item} 
+    key={item.id} 
+    incrementItem={()=>incrementItem(item)} 
+    decrementItem={()=>decrementItem(item)} 
+    removeItem={()=>removeItemFromCart(item)}
+    />
+    ))}
+    <button className='btn btn-success'>Go to checkout</button>
+    </>
+    ): 
+    (<h3>Your Cart is empty</h3>)}
    </>
-  )
+  );
 }
 
 export default Cart
